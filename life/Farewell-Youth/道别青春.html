@@ -1,0 +1,127 @@
+﻿<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        @font-face {
+            font-family: digit;
+            src: url('digital-7_mono.ttf') format("truetype");
+        }
+    </style>
+    <link href="style/default.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="style/jquery.js"></script>
+    <script type="text/javascript" src="style/garden.js"></script>
+    <script type="text/javascript" src="style/functions.js"></script>
+</head>
+
+<body>
+    <EMBED style="FILTER: invert(); WIDTH: 0; HEIGHT: 0" src="道别青春.mp3" type="audio/mpeg" autostart="true"></EMBED>
+
+    <div id="mainDiv">
+        <div id="content">
+            <div id="code">
+                
+                <span class="space"> say good bye never say good bye </span></br>
+                <span class="space"> 时针分针 一点点不停在转动 </span></br>
+                <span class="space"> 一点点让我们学会怀念 </span></br>
+                <span class="space"> 怀念过去 怀念这里的一切 </span></br>
+                <span class="space"> 怀念我们青涩的容颜 </span></br>
+                <span class="space">  </span></br>
+                <span class="space"> 日记本 </span></br>
+                <span class="space"> 合上了尾页 </span></br>
+                <span class="space"> 记着多少故事情结 </span></br>
+                <span class="space"> 长头发 帆布鞋 </span></br>
+                <span class="space"> 裙儿轻轻飞 飘向云间 </span></br>
+                <span class="space">  </span></br>
+                <span class="space"> 那些青春时最绚烂的颜色 </span></br>
+                <span class="space"> 那些青春时最美丽的不舍 </span></br>
+                <span class="space"> 我们曾一起唱过的歌 </span></br>
+                <span class="space"> 唱不完人生几何 </span></br>
+                <span class="space"> 回首道别青春道别这旅程 </span></br>
+                <span class="space">  </span></br>
+                <span class="space"> 我多感谢这四年中有你们 </span></br>
+                <span class="space"> 陪我度过四季风雨的旅程 </span></br>
+                <span class="space"> 现在我们唱的这首歌 </span></br>
+                <span class="space"> 送给我们的青春 </span></br>
+                <span class="space"> 一起续写我们未完的缘分 </span></br>
+                
+				
+<script type="text/javascript"><!--
+//google_ad_client = "ca-pub-3712320065678109";
+/* lovead */
+//google_ad_slot = "0650322805";
+//google_ad_width = 320;
+//google_ad_height = 50;
+//-->
+</script>
+<!-- <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> -->
+</script>
+            </div>
+            <div id="loveHeart">
+                <canvas id="garden"></canvas>
+                <div id="words">
+                    <div id="messages">
+<center>
+<script type="text/javascript"><!--
+//google_ad_client = "ca-pub-3712320065678109";
+/* lovead */
+//google_ad_slot = "0650322805";
+//google_ad_width = 320;
+//google_ad_height = 50;
+//-->
+</script>
+<!-- <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> -->
+</script>
+</center>
+                      <font size=16 style="color:red;">&nbsp;&nbsp;&nbsp;&nbsp; Happy! </font>
+                        <div id="elapseClock">
+                            <img src="miao.jpg">
+                        </div>
+                        <a href='#' id="accept"></a>
+                    </div>
+                    <div id="loveu">
+                       <br/>
+                        <div class="signature">- 加菲</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="copyright">
+           
+        </div>
+    </div>
+    <script type="text/javascript">
+        var offsetX = $("#loveHeart").width() / 2;
+        var offsetY = $("#loveHeart").height() / 2 - 55;
+        
+        if (!document.createElement('canvas').getContext) {
+            var msg = document.createElement("div");
+            msg.id = "errorMsg";
+            msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+"; 
+            document.body.appendChild(msg);
+            $("#code").css("display", "none")
+            $("#copyright").css("position", "absolute");
+            $("#copyright").css("bottom", "10px");
+            document.execCommand("stop");
+        } else {
+            setTimeout(function () {
+                adjustWordsPosition();
+                startHeartAnimation();
+            }, 10000);
+            
+            $("#accept").click(function(){
+                $(this).hide();
+                $("#elapseClock").show();
+                var together = new Date();
+                timeElapse(together);
+                setInterval(function () {
+                    timeElapse(together);
+                }, 5000);
+            })
+            adjustCodePosition();
+            $("#code").typewriter();
+        }
+    </script>
+</body>
+</html>
