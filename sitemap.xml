@@ -2,28 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/404.html</loc>
+    <loc>http://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/Swagger-bug-%E5%BD%93-http-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E6%98%AF-get-%E6%97%B6-Operation.getConsumes()-%E4%B8%8D%E5%BA%94%E8%AF%A5%E8%BF%94%E5%9B%9E-application-json/</loc>
+    
+    <lastmod>2018-12-27T14:31:45.947Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://ykgarfield.github.io/404.html</loc>
     
     <lastmod>2018-12-27T03:12:19.215Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/search/index.html</loc>
+    <loc>http://ykgarfield.github.io/search/index.html</loc>
     
     <lastmod>2018-12-27T03:11:55.032Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/about/index.html</loc>
+    <loc>http://ykgarfield.github.io/about/index.html</loc>
     
     <lastmod>2018-12-27T03:11:39.054Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/12/27/hello-world/</loc>
+    <loc>http://ykgarfield.github.io/2018/12/27/hello-world/</loc>
     
     <lastmod>2018-12-27T02:56:51.902Z</lastmod>
     
