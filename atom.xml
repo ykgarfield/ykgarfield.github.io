@@ -5,9 +5,9 @@
   <subtitle>ykgarfield blog</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://ykgarfield.github.io/"/>
+  <link href="https://ykgarfield.github.io/"/>
   <updated>2018-12-28T05:32:17.466Z</updated>
-  <id>http://ykgarfield.github.io/</id>
+  <id>https://ykgarfield.github.io/</id>
   
   <author>
     <name>[object Object]</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Swagger bug-当 http 请求方法是 get 时 Operation.getConsumes() 不应该返回 application/json</title>
-    <link href="http://ykgarfield.github.io/2018/12/25/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/Swagger-bug-%E5%BD%93-http-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E6%98%AF-get-%E6%97%B6-Operation.getConsumes()-%E4%B8%8D%E5%BA%94%E8%AF%A5%E8%BF%94%E5%9B%9E-application-json/"/>
-    <id>http://ykgarfield.github.io/2018/12/25/文档工具/swagger/Swagger-bug-当-http-请求方法是-get-时-Operation.getConsumes()-不应该返回-application-json/</id>
+    <link href="https://ykgarfield.github.io/2018/12/25/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/Swagger-bug-%E5%BD%93-http-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E6%98%AF-get-%E6%97%B6-Operation.getConsumes()-%E4%B8%8D%E5%BA%94%E8%AF%A5%E8%BF%94%E5%9B%9E-application-json/"/>
+    <id>https://ykgarfield.github.io/2018/12/25/文档工具/swagger/Swagger-bug-当-http-请求方法是-get-时-Operation.getConsumes()-不应该返回-application-json/</id>
     <published>2018-12-24T16:00:00.000Z</published>
     <updated>2018-12-28T05:32:17.466Z</updated>
     
@@ -34,21 +34,21 @@
     
     </summary>
     
-      <category term="文档工具" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
+      <category term="文档工具" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
     
-      <category term="swagger" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/"/>
+      <category term="swagger" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/"/>
     
     
-      <category term="swagger" scheme="http://ykgarfield.github.io/tags/swagger/"/>
+      <category term="swagger" scheme="https://ykgarfield.github.io/tags/swagger/"/>
     
-      <category term="swagger bug" scheme="http://ykgarfield.github.io/tags/swagger-bug/"/>
+      <category term="swagger bug" scheme="https://ykgarfield.github.io/tags/swagger-bug/"/>
     
   </entry>
   
   <entry>
     <title>如何通过程序在 confluence 中创建 markdown 文档</title>
-    <link href="http://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E7%A8%8B%E5%BA%8F%E5%9C%A8%20confluence%20%E4%B8%AD%E5%88%9B%E5%BB%BA%20markdown%20%E6%96%87%E6%A1%A3/"/>
-    <id>http://ykgarfield.github.io/2018/12/23/文档工具/confluence/如何通过程序在 confluence 中创建 markdown 文档/</id>
+    <link href="https://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E7%A8%8B%E5%BA%8F%E5%9C%A8%20confluence%20%E4%B8%AD%E5%88%9B%E5%BB%BA%20markdown%20%E6%96%87%E6%A1%A3/"/>
+    <id>https://ykgarfield.github.io/2018/12/23/文档工具/confluence/如何通过程序在 confluence 中创建 markdown 文档/</id>
     <published>2018-12-22T16:00:00.000Z</published>
     <updated>2018-12-28T05:32:01.914Z</updated>
     
@@ -63,21 +63,21 @@
     
     </summary>
     
-      <category term="文档工具" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
+      <category term="文档工具" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
     
-      <category term="confluence" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/"/>
+      <category term="confluence" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/"/>
     
     
-      <category term="confluence" scheme="http://ykgarfield.github.io/tags/confluence/"/>
+      <category term="confluence" scheme="https://ykgarfield.github.io/tags/confluence/"/>
     
-      <category term="confluence markdown" scheme="http://ykgarfield.github.io/tags/confluence-markdown/"/>
+      <category term="confluence markdown" scheme="https://ykgarfield.github.io/tags/confluence-markdown/"/>
     
   </entry>
   
   <entry>
     <title>记一次 confluence markdown 表格样式丑陋发生的事</title>
-    <link href="http://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/%E8%AE%B0%E4%B8%80%E6%AC%A1%20confluence%20markdown%20%E8%A1%A8%E6%A0%BC%E6%A0%B7%E5%BC%8F%E4%B8%91%E9%99%8B%E5%8F%91%E7%94%9F%E7%9A%84%E4%BA%8B/"/>
-    <id>http://ykgarfield.github.io/2018/12/23/文档工具/confluence/记一次 confluence markdown 表格样式丑陋发生的事/</id>
+    <link href="https://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/%E8%AE%B0%E4%B8%80%E6%AC%A1%20confluence%20markdown%20%E8%A1%A8%E6%A0%BC%E6%A0%B7%E5%BC%8F%E4%B8%91%E9%99%8B%E5%8F%91%E7%94%9F%E7%9A%84%E4%BA%8B/"/>
+    <id>https://ykgarfield.github.io/2018/12/23/文档工具/confluence/记一次 confluence markdown 表格样式丑陋发生的事/</id>
     <published>2018-12-22T16:00:00.000Z</published>
     <updated>2018-12-28T05:32:00.585Z</updated>
     
@@ -93,14 +93,14 @@
     
     </summary>
     
-      <category term="文档工具" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
+      <category term="文档工具" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
     
-      <category term="confluence" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/"/>
+      <category term="confluence" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/"/>
     
     
-      <category term="confluence" scheme="http://ykgarfield.github.io/tags/confluence/"/>
+      <category term="confluence" scheme="https://ykgarfield.github.io/tags/confluence/"/>
     
-      <category term="confluence markdown" scheme="http://ykgarfield.github.io/tags/confluence-markdown/"/>
+      <category term="confluence markdown" scheme="https://ykgarfield.github.io/tags/confluence-markdown/"/>
     
   </entry>
   
