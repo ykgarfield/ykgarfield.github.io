@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ykgarfield.github.io/"/>
-  <updated>2018-12-27T02:56:51.902Z</updated>
+  <updated>2018-12-28T03:00:37.525Z</updated>
   <id>http://ykgarfield.github.io/</id>
   
   <author>
@@ -17,32 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://ykgarfield.github.io/2018/12/27/hello-world/"/>
-    <id>http://ykgarfield.github.io/2018/12/27/hello-world/</id>
-    <published>2018-12-27T02:56:51.901Z</published>
-    <updated>2018-12-27T02:56:51.902Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
     <title>Swagger bug-当 http 请求方法是 get 时 Operation.getConsumes() 不应该返回 application/json</title>
     <link href="http://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/Swagger-bug-%E5%BD%93-http-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E6%98%AF-get-%E6%97%B6-Operation.getConsumes()-%E4%B8%8D%E5%BA%94%E8%AF%A5%E8%BF%94%E5%9B%9E-application-json/"/>
     <id>http://ykgarfield.github.io/2018/12/23/文档工具/swagger/Swagger-bug-当-http-请求方法是-get-时-Operation.getConsumes()-不应该返回-application-json/</id>
     <published>2018-12-22T16:00:00.000Z</published>
-    <updated>2018-12-27T14:31:45.947Z</updated>
+    <updated>2018-12-28T03:00:37.525Z</updated>
     
     <content type="html"><![CDATA[<h1 id="问题由来"><a href="#问题由来" class="headerlink" title="问题由来"></a>问题由来</h1><p>相关的 issue 可见: <a href="https://github.com/springfox/springfox/issues/2815" target="_blank" rel="noopener">https://github.com/springfox/springfox/issues/2815</a></p><p>最近在用 swagger lib 的时候发现一个问题, 就是当 HTTP 请求方法是 <code>GET</code>  时候, 返回的 <code>consume</code> 是 <code>application/json</code>, 感觉有些不对劲,  于是乎就做了如下的实验:</p><p>比如有如下一个方法:</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@Api</span>(value =<span class="string">"SwaggerTestService"</span>, tags = <span class="string">"SwaggerTest"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerTestController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(value= <span class="string">"/SwaggerTest/getMethodTest"</span>,method = RequestMethod.GET)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"(SwaggerTestService) getMethodTest"</span>, notes=<span class="string">"(SwaggerTestService) getMethodTest"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseResponse <span class="title">getMethodTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>当访问 <code>/v2/api-docs</code> 的时候返回的信息如下:</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">"/SwaggerTest/getMethodTest": &#123;</span><br><span class="line">"get": &#123;</span><br><span class="line">"tags": [</span><br><span class="line"><span class="string">"SwaggerTest"</span></span><br><span class="line">],</span><br><span class="line">"summary": "(SwaggerTestService) getMethodTest",</span><br><span class="line">"description": "(SwaggerTestService) getMethodTest",</span><br><span class="line">"consumes": [</span><br><span class="line"><span class="string">"application/json"</span></span><br><span class="line">],</span><br><span class="line">"produces": [</span><br><span class="line"><span class="string">"*/*"</span></span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>可以发现这里 <code>consumes</code> 返回的是 <code>application/json</code>, 稍微思考下, 会发现其实是不太对的.其实这就意味着 GET 请求的 <code>Content-Type</code> 是  <code>application/json</code>, 但是 HTTP GET 请求怎么会是 <code>application/json</code> 呢? 显然是不对的.相关的 GET 请求是否需要 <code>Content-Type</code> 讨论可见: <a href="https://stackoverflow.com/questions/5661596/do-i-need-a-content-type-for-http-get-requests" target="_blank" rel="noopener">https://stackoverflow.com/questions/5661596/do-i-need-a-content-type-for-http-get-requests</a>, 从中我们可以看出, 只有 <code>POST</code> 和 <code>PUT</code> 需要请求的 <code>Content-Type</code>.</p><p>因为是使用 swagger lib 相关 API 的时候发现的问题, 所以进一步发现是因为 <code>io.swagger.models.Operation#getConsumes()</code> 的返回值有问题.所以在我们使用此 API 的时候, 需要注意, 如果是 <code>GET</code> 请求, 那么是可以忽略此方法的返回值的.</p>]]></content>
     
@@ -54,6 +33,10 @@
       
     
     </summary>
+    
+      <category term="文档工具" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="swagger" scheme="http://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/"/>
     
     
       <category term="swagger" scheme="http://ykgarfield.github.io/tags/swagger/"/>
