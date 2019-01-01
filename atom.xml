@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://ykgarfield.github.io/"/>
-  <updated>2018-12-28T05:32:17.466Z</updated>
+  <updated>2019-01-01T14:56:45.978Z</updated>
   <id>https://ykgarfield.github.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Swagger2Markup bug-生成的 html 文档有问题当 ApiModel value 包含斜线</title>
+    <link href="https://ykgarfield.github.io/2019/01/01/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/Swagger2Markup%20bug-%E7%94%9F%E6%88%90%E7%9A%84%20html%20%E6%96%87%E6%A1%A3%E6%9C%89%E9%97%AE%E9%A2%98%E5%BD%93%20ApiModel%20value%20%E5%8C%85%E5%90%AB%E6%96%9C%E7%BA%BF/"/>
+    <id>https://ykgarfield.github.io/2019/01/01/文档工具/swagger/Swagger2Markup bug-生成的 html 文档有问题当 ApiModel value 包含斜线/</id>
+    <published>2018-12-31T16:00:00.000Z</published>
+    <updated>2019-01-01T14:56:45.978Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="错误描述"><a href="#错误描述" class="headerlink" title="错误描述"></a>错误描述</h1><p>此问题的由来是因为某天看用 <code>asciidoctor-maven-plugin</code> 生成的 swagger html 文档时, 发现有个链接没法跳转到指定的 header.如下图所示:</p><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/Swagger2Markup_bug-生成的_html_文档有问题当_ApiModel_value_包含斜线/link-can-not-jump.jpg" alt="link-can-not-jump"></p><p>经过排查发现是因为 <code>ApiModel</code> 的 <code>value</code> 包含 <code>/</code> 时会出现问题.以上面的问题为例, 写了一个简单的示例, 如下:</p><p><code>Controller</code> 有一个方法:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value= &quot;...&quot;, method = RequestMethod.POST)</span><br><span class="line">@ApiOperation(value=&quot;...&quot;, notes=&quot;...&quot;)</span><br><span class="line">public BaseResponse createOrder(@Valid @RequestBody Order request, BindingResult bindingResult) &#123;</span><br><span class="line">return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>Order</code> 类定义如下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 带有斜线 /</span><br><span class="line">@ApiModel(&quot;order/create_order&quot;)</span><br><span class="line">public class Order &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="错误排查"><a href="#错误排查" class="headerlink" title="错误排查"></a>错误排查</h1><p>首先查看生成的 html 文件:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 跳转链接的 ID 是 _create_order</span><br><span class="line">&lt;p&gt;&lt;a href=&quot;#_create_order&quot;&gt;create_order&lt;/a&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">// ID 是 _order_create_order, 而不是 _create_order</span><br><span class="line">&lt;h3 id=&quot;_order_create_order&quot;&gt;order/create_order&lt;/h3&gt;</span><br></pre></td></tr></table></figure><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/Swagger2Markup_bug-生成的_html_文档有问题当_ApiModel_value_包含斜线/html-link-can-not-jump-to-header.jpg" alt="link-can-not-jump-to-header"></p><p>进一步排查生成的 <code>.adoc</code> 文件.在 <code>paths.adoc</code>、<code>definitions.adoc</code> 文件中搜索 <code>create_order</code> 相关的信息.</p><p><code>paths.adoc</code> 内容如下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">==== Parameters</span><br><span class="line"></span><br><span class="line">[options=&quot;header&quot;, cols=&quot;.^2a,.^3a,.^9a,.^4a&quot;]</span><br><span class="line">|===</span><br><span class="line">|Type|Name|Description|Schema</span><br><span class="line">|**Body**|**request** +</span><br><span class="line">__required__|request|&lt;&lt;_create_order,create_order&gt;&gt;</span><br><span class="line">|===</span><br></pre></td></tr></table></figure><p><code>definitions.adoc</code> 内容如下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[_order_create_order]]</span><br><span class="line">=== order/create_order</span><br></pre></td></tr></table></figure><p>很明显, 这两个 ID 是不一样的.就导致了生成的 html 文档也有问题.</p><p>这会导致如下两个问题:</p><ul><li>链接无法跳转到指定的 header</li><li>请求/响应示例无法生成</li></ul><h1 id="错误原因分析"><a href="#错误原因分析" class="headerlink" title="错误原因分析"></a>错误原因分析</h1><p>针对上面的两个问题, 分别做下错误原因分析:</p><ul><li>链接无法跳转到指定的 header:  <code>GenericRef</code> 类有两个属性, <code>ref</code> 和 <code>simpleRef</code>.以上面的例子为例(<code>order/create_order</code>), <code>ref</code> 是 <code>#/definitions/order/create_order</code>, <code>simpleRef</code> 是 <code>create_order</code>.<code>simpleRef</code> 不包含 <code>order</code> 前缀.所以在生成链接 id 的时候, 可能是一个使用了 <code>simpleRef</code>, 另外一个使用了 <code>ref</code>, 所以应该统一使用其中一个.</li><li>请求/响应示例无法生成: <code>Swagger#getDefinitions()</code> 方法返回的是 <code>Map&lt;String, Model&gt;</code>, 这个 map 里面包含了 <code>/order/create_order</code>, 但是不包含 <code>create_order</code>, 所以当生成示例的时候, 可能是使用的 <code>simpleRef</code> 从 map 中获取 <code>Model</code> 对象(此时肯定获取不到).如果使用 <code>ref</code>(去除 <code>#/definitions/</code> 前缀)可以从 map 中获取 <code>Model</code> 对象, 所以应该先使用 <code>simpleRef</code>, 如果获取不到 <code>Model</code>, 再使用 <code>ref</code>.</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;错误描述&quot;&gt;&lt;a href=&quot;#错误描述&quot; class=&quot;headerlink&quot; title=&quot;错误描述&quot;&gt;&lt;/a&gt;错误描述&lt;/h1&gt;&lt;p&gt;此问题的由来是因为某天看用 &lt;code&gt;asciidoctor-maven-plugin&lt;/code&gt; 生成的 swagge
+      
+    
+    </summary>
+    
+      <category term="文档工具" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="swagger" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/"/>
+    
+    
+      <category term="swagger" scheme="https://ykgarfield.github.io/tags/swagger/"/>
+    
+      <category term="swagger bug" scheme="https://ykgarfield.github.io/tags/swagger-bug/"/>
+    
+  </entry>
   
   <entry>
     <title>Swagger bug-当 http 请求方法是 get 时 Operation.getConsumes() 不应该返回 application/json</title>
@@ -42,36 +71,6 @@
       <category term="swagger" scheme="https://ykgarfield.github.io/tags/swagger/"/>
     
       <category term="swagger bug" scheme="https://ykgarfield.github.io/tags/swagger-bug/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>confluence-记一次 confluence markdown 表格样式不美观发生的事</title>
-    <link href="https://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/confluence-%E8%AE%B0%E4%B8%80%E6%AC%A1-confluence-markdown-%E8%A1%A8%E6%A0%BC%E6%A0%B7%E5%BC%8F%E4%B8%8D%E7%BE%8E%E8%A7%82%E5%8F%91%E7%94%9F%E7%9A%84%E4%BA%8B/"/>
-    <id>https://ykgarfield.github.io/2018/12/23/文档工具/confluence/confluence-记一次-confluence-markdown-表格样式不美观发生的事/</id>
-    <published>2018-12-22T16:00:00.000Z</published>
-    <updated>2019-01-01T14:55:22.553Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近在用 confluence markdown 插件(免费)的时候, 发现生成的表格样式实在不太美观, 甚至有点丑陋:</p><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/记一次_confluence_markdown_表格样式丑陋发生的事/markdown-table-style-ugly.jpg" alt="markdown-table-style-ugly"></p><p>再看看 confluence 原生表格的样式做个对比:</p><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/记一次_confluence_markdown_表格样式丑陋发生的事/markdown-native-table-style-diff.jpg" alt="markdown-native-table-style-diff"></p><p>不知道之前用 markdown 插件写作的人是怎么能忍受这种表格样式的.</p><p>于是乎就去评论了一下, 没想到的是很快就得到了回复.详情可见: <a href="https://marketplace.atlassian.com/apps/1211438/markdown-macro-for-confluence?hosting=server&amp;tab=reviews" target="_blank" rel="noopener">https://marketplace.atlassian.com/apps/1211438/markdown-macro-for-confluence?hosting=server&amp;tab=reviews</a></p><p>接下来就继续与作者进行沟通, 不过并没有抱太大期望.意外不到的是, 作者提供了一个新版本的插件 jar 包给我, 让我试试看, 有些意外和惊喜.</p><p>后面的沟通都是通过 <a href="https://atlasauthority.atlassian.net/servicedesk/customer/portal/1/SUPPORT-111" target="_blank" rel="noopener">https://atlasauthority.atlassian.net/servicedesk/customer/portal/1/SUPPORT-111</a></p><p>因为一开始并不太熟悉怎么进行升级, 所以一开始升级的时候出了问题.在 <code>SUPPORT-111</code> 也有详细描述, 后来重新思考, 通过 <code>Atlassian Marketplace -&gt; 管理插件 -&gt; 上传插件</code> 的方式进行更新.更新完成之后, 表格的样式终于有了变化, 使用了 confluence 本地的样式.</p><p>此插件也于 2018.12.24 发布了新版本.</p><p>回顾整件事, 其实也是一个无心之举, 只是想去吐槽下.没想到作者也比较热心, 很快就对这个问题进行了修改.再此, 还是很感谢作者把免费插件做的这么好.</p><p>所以再使用 confluence 插件的时候, 如果觉得有做的不好的地方, 其实也是可以和作者进行沟通的, 说不定提出的建议就被采纳了.^_^</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;最近在用 confluence markdown 插件(免费)的时候, 发现生成的表格样式实在不太美观, 甚至有点丑陋:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://www.github.com/ykgarfield/my-blog/raw/master/images
-      
-    
-    </summary>
-    
-      <category term="文档工具" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
-    
-      <category term="confluence" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/"/>
-    
-    
-      <category term="confluence" scheme="https://ykgarfield.github.io/tags/confluence/"/>
-    
-      <category term="confluence markdown" scheme="https://ykgarfield.github.io/tags/confluence-markdown/"/>
     
   </entry>
   
@@ -105,31 +104,32 @@
   </entry>
   
   <entry>
-    <title>Swagger2Markup bug-生成的 html 文档有问题当 ApiModel value 包含斜线</title>
-    <link href="https://ykgarfield.github.io/2018/01/01/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/Swagger2Markup%20bug-%E7%94%9F%E6%88%90%E7%9A%84%20html%20%E6%96%87%E6%A1%A3%E6%9C%89%E9%97%AE%E9%A2%98%E5%BD%93%20ApiModel%20value%20%E5%8C%85%E5%90%AB%E6%96%9C%E7%BA%BF/"/>
-    <id>https://ykgarfield.github.io/2018/01/01/文档工具/swagger/Swagger2Markup bug-生成的 html 文档有问题当 ApiModel value 包含斜线/</id>
-    <published>2017-12-31T16:00:00.000Z</published>
-    <updated>2019-01-01T14:52:42.485Z</updated>
+    <title>confluence-记一次 confluence markdown 表格样式不美观发生的事</title>
+    <link href="https://ykgarfield.github.io/2018/12/23/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/confluence-%E8%AE%B0%E4%B8%80%E6%AC%A1-confluence-markdown-%E8%A1%A8%E6%A0%BC%E6%A0%B7%E5%BC%8F%E4%B8%8D%E7%BE%8E%E8%A7%82%E5%8F%91%E7%94%9F%E7%9A%84%E4%BA%8B/"/>
+    <id>https://ykgarfield.github.io/2018/12/23/文档工具/confluence/confluence-记一次-confluence-markdown-表格样式不美观发生的事/</id>
+    <published>2018-12-22T16:00:00.000Z</published>
+    <updated>2019-01-01T14:55:22.553Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="错误描述"><a href="#错误描述" class="headerlink" title="错误描述"></a>错误描述</h1><p>此问题的由来是因为某天看用 <code>asciidoctor-maven-plugin</code> 生成的 swagger html 文档时, 发现有个链接没法跳转到指定的 header.如下图所示:</p><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/Swagger2Markup_bug-生成的_html_文档有问题当_ApiModel_value_包含斜线/link-can-not-jump.jpg" alt="link-can-not-jump"></p><p>经过排查发现是因为 <code>ApiModel</code> 的 <code>value</code> 包含 <code>/</code> 时会出现问题.以上面的问题为例, 写了一个简单的示例, 如下:</p><p><code>Controller</code> 有一个方法:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value= &quot;...&quot;, method = RequestMethod.POST)</span><br><span class="line">@ApiOperation(value=&quot;...&quot;, notes=&quot;...&quot;)</span><br><span class="line">public BaseResponse createOrder(@Valid @RequestBody Order request, BindingResult bindingResult) &#123;</span><br><span class="line">return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>Order</code> 类定义如下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 带有斜线 /</span><br><span class="line">@ApiModel(&quot;order/create_order&quot;)</span><br><span class="line">public class Order &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="错误排查"><a href="#错误排查" class="headerlink" title="错误排查"></a>错误排查</h1><p>首先查看生成的 html 文件:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 跳转链接的 ID 是 _create_order</span><br><span class="line">&lt;p&gt;&lt;a href=&quot;#_create_order&quot;&gt;create_order&lt;/a&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">// ID 是 _order_create_order, 而不是 _create_order</span><br><span class="line">&lt;h3 id=&quot;_order_create_order&quot;&gt;order/create_order&lt;/h3&gt;</span><br></pre></td></tr></table></figure><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/Swagger2Markup_bug-生成的_html_文档有问题当_ApiModel_value_包含斜线/html-link-can-not-jump-to-header.jpg" alt="link-can-not-jump-to-header"></p><p>进一步排查生成的 <code>.adoc</code> 文件.在 <code>paths.adoc</code>、<code>definitions.adoc</code> 文件中搜索 <code>create_order</code> 相关的信息.</p><p><code>paths.adoc</code> 内容如下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">==== Parameters</span><br><span class="line"></span><br><span class="line">[options=&quot;header&quot;, cols=&quot;.^2a,.^3a,.^9a,.^4a&quot;]</span><br><span class="line">|===</span><br><span class="line">|Type|Name|Description|Schema</span><br><span class="line">|**Body**|**request** +</span><br><span class="line">__required__|request|&lt;&lt;_create_order,create_order&gt;&gt;</span><br><span class="line">|===</span><br></pre></td></tr></table></figure><p><code>definitions.adoc</code> 内容如下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[_order_create_order]]</span><br><span class="line">=== order/create_order</span><br></pre></td></tr></table></figure><p>很明显, 这两个 ID 是不一样的.就导致了生成的 html 文档也有问题.</p><p>这会导致如下两个问题:</p><ul><li>链接无法跳转到指定的 header</li><li>请求/响应示例无法生成</li></ul><h1 id="错误原因分析"><a href="#错误原因分析" class="headerlink" title="错误原因分析"></a>错误原因分析</h1><p>针对上面的两个问题, 分别做下错误原因分析:</p><ul><li>链接无法跳转到指定的 header:  <code>GenericRef</code> 类有两个属性, <code>ref</code> 和 <code>simpleRef</code>.以上面的例子为例(<code>order/create_order</code>), <code>ref</code> 是 <code>#/definitions/order/create_order</code>, <code>simpleRef</code> 是 <code>create_order</code>.<code>simpleRef</code> 不包含 <code>order</code> 前缀.所以在生成链接 id 的时候, 可能是一个使用了 <code>simpleRef</code>, 另外一个使用了 <code>ref</code>, 所以应该统一使用其中一个.</li><li>请求/响应示例无法生成: <code>Swagger#getDefinitions()</code> 方法返回的是 <code>Map&lt;String, Model&gt;</code>, 这个 map 里面包含了 <code>/order/create_order</code>, 但是不包含 <code>create_order</code>, 所以当生成示例的时候, 可能是使用的 <code>simpleRef</code> 从 map 中获取 <code>Model</code> 对象(此时肯定获取不到).如果使用 <code>ref</code>(去除 <code>#/definitions/</code> 前缀)可以从 map 中获取 <code>Model</code> 对象, 所以应该先使用 <code>simpleRef</code>, 如果获取不到 <code>Model</code>, 再使用 <code>ref</code>.</li></ul>]]></content>
+    <content type="html"><![CDATA[<p>最近在用 confluence markdown 插件(免费)的时候, 发现生成的表格样式实在不太美观, 甚至有点丑陋:</p><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/记一次_confluence_markdown_表格样式丑陋发生的事/markdown-table-style-ugly.jpg" alt="markdown-table-style-ugly"></p><p>再看看 confluence 原生表格的样式做个对比:</p><p><img src="https://www.github.com/ykgarfield/my-blog/raw/master/images/记一次_confluence_markdown_表格样式丑陋发生的事/markdown-native-table-style-diff.jpg" alt="markdown-native-table-style-diff"></p><p>不知道之前用 markdown 插件写作的人是怎么能忍受这种表格样式的.</p><p>于是乎就去评论了一下, 没想到的是很快就得到了回复.详情可见: <a href="https://marketplace.atlassian.com/apps/1211438/markdown-macro-for-confluence?hosting=server&amp;tab=reviews" target="_blank" rel="noopener">https://marketplace.atlassian.com/apps/1211438/markdown-macro-for-confluence?hosting=server&amp;tab=reviews</a></p><p>接下来就继续与作者进行沟通, 不过并没有抱太大期望.意外不到的是, 作者提供了一个新版本的插件 jar 包给我, 让我试试看, 有些意外和惊喜.</p><p>后面的沟通都是通过 <a href="https://atlasauthority.atlassian.net/servicedesk/customer/portal/1/SUPPORT-111" target="_blank" rel="noopener">https://atlasauthority.atlassian.net/servicedesk/customer/portal/1/SUPPORT-111</a></p><p>因为一开始并不太熟悉怎么进行升级, 所以一开始升级的时候出了问题.在 <code>SUPPORT-111</code> 也有详细描述, 后来重新思考, 通过 <code>Atlassian Marketplace -&gt; 管理插件 -&gt; 上传插件</code> 的方式进行更新.更新完成之后, 表格的样式终于有了变化, 使用了 confluence 本地的样式.</p><p>此插件也于 2018.12.24 发布了新版本.</p><p>回顾整件事, 其实也是一个无心之举, 只是想去吐槽下.没想到作者也比较热心, 很快就对这个问题进行了修改.再此, 还是很感谢作者把免费插件做的这么好.</p><p>所以再使用 confluence 插件的时候, 如果觉得有做的不好的地方, 其实也是可以和作者进行沟通的, 说不定提出的建议就被采纳了.^_^</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h1 id=&quot;错误描述&quot;&gt;&lt;a href=&quot;#错误描述&quot; class=&quot;headerlink&quot; title=&quot;错误描述&quot;&gt;&lt;/a&gt;错误描述&lt;/h1&gt;&lt;p&gt;此问题的由来是因为某天看用 &lt;code&gt;asciidoctor-maven-plugin&lt;/code&gt; 生成的 swagge
+        &lt;p&gt;最近在用 confluence markdown 插件(免费)的时候, 发现生成的表格样式实在不太美观, 甚至有点丑陋:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://www.github.com/ykgarfield/my-blog/raw/master/images
       
     
     </summary>
     
       <category term="文档工具" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/"/>
     
-      <category term="swagger" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/swagger/"/>
+      <category term="confluence" scheme="https://ykgarfield.github.io/categories/%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/confluence/"/>
     
     
-      <category term="swagger" scheme="https://ykgarfield.github.io/tags/swagger/"/>
+      <category term="confluence" scheme="https://ykgarfield.github.io/tags/confluence/"/>
     
-      <category term="swagger bug" scheme="https://ykgarfield.github.io/tags/swagger-bug/"/>
+      <category term="confluence markdown" scheme="https://ykgarfield.github.io/tags/confluence-markdown/"/>
     
   </entry>
   
