@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://ykgarfield.github.io/"/>
-  <updated>2019-01-21T09:01:39.546Z</updated>
+  <updated>2019-02-14T05:48:59.213Z</updated>
   <id>https://ykgarfield.github.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vscode github 图床插件 markdown-pic2github 改造</title>
+    <link href="https://ykgarfield.github.io/2019/02/14/%E5%B7%A5%E5%85%B7/vscode/vscode%20github%20%E5%9B%BE%E5%BA%8A%E6%8F%92%E4%BB%B6%20markdown-pic2github%20%E6%94%B9%E9%80%A0/"/>
+    <id>https://ykgarfield.github.io/2019/02/14/工具/vscode/vscode github 图床插件 markdown-pic2github 改造/</id>
+    <published>2019-02-13T16:00:00.000Z</published>
+    <updated>2019-02-14T05:48:59.213Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="支持图床服务的编辑器"><a href="#支持图床服务的编辑器" class="headerlink" title="支持图床服务的编辑器"></a>支持图床服务的编辑器</h2><p>目前市场上的图床服务还是比较多的, 比如 <code>github</code>、<code>imgur</code>、<code>sm.ms</code>、<code>七牛云存储</code>、<code>upyun存储</code>、<code>阿里oss云存储</code>、<code>腾讯oss云存储</code>、<code>weibo</code> 等.选择哪种图床服务取决于个人喜好, 重要的是这些图床服务得有一个比较好的类似图形化的工具, 方便使用者.这就得看使用的 markdown 编辑器是否支持这样的功能.个人使用的是 <code>github</code> 图床服务.</p><h3 id="小书匠"><a href="#小书匠" class="headerlink" title="小书匠"></a>小书匠</h3><p>目前在这方便做的比较好的是 <code>小书匠</code>.提供了多种图床服务, 支持一些自定义的命名规则.功能按钮就能直接上传图片到指定的图床服务, 并返回对应的图片链接.不过 <code>小书匠</code> 还是有一些不尽人意的地方, 所以最终没有使用.</p><h3 id="GitNode"><a href="#GitNode" class="headerlink" title="GitNode"></a>GitNode</h3><p>这是一款最近才出来的编辑器, 也提供了一些图床服务(以插件的方式提供), 不过目前做的比较简单, 另外扩展 API 还不完善, 持续观望中.</p><h3 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h3><p>vscode 是一款扩展能力很强的编辑器, 可通过编写插件来进行扩展.目前也是支持了一些图传的服务.而支持 github 图床的, 目前只找到了 <code>markdown-pic2github</code> 这一个.下面会分析这款插件有哪些方面的不足, 以及如何进行改进.</p><p>插件地址: <a href="https://marketplace.visualstudio.com/items?itemName=quareia.markdown-pic2github" target="_blank" rel="noopener">https://marketplace.visualstudio.com/items?itemName=quareia.markdown-pic2github</a><br>github 地址: <a href="https://github.com/Quareia/vscode-markdown-pic2github" target="_blank" rel="noopener">https://github.com/Quareia/vscode-markdown-pic2github</a></p><h2 id="markdown-pic2github-的不足以及改造点"><a href="#markdown-pic2github-的不足以及改造点" class="headerlink" title="markdown-pic2github 的不足以及改造点"></a>markdown-pic2github 的不足以及改造点</h2><p>首先先分析下此插件有哪些方便的不足, 以及如何进行改造来满足自定义的需求.</p><ul><li>windows 环境下无法使用, 主要有几下几个原因导致:<ul><li>不支持 <code>cp</code> 命令, 复制文件.需要使用 <code>copy</code> 或者 <code>xcopy</code> 命令复制文件</li><li>进入系统盘外的磁盘目录, 只通过 <code>cd</code> 命令还不够.比如, 进入 <code>E:\git</code> 目录, 使用 <code>cmd</code> 需要两条命令(<code>E: &amp;&amp; cd E:\git</code>)才能进入, </li></ul></li><li>没有对图片 url 进行转义, 这会导致如果 url 有特殊字符, 那么会导致返回的图片 url 有问题.</li><li>没有足够好的目录归档支持, 比如有一个 <code>hello.md</code> 文档, 文档里有多张图片, 那么这些图片最好能够归档到 <code>hello</code> 这一个目录下, 便于进行管理.对于这一点, 自己使用了如下的方式进行管理.比如在某个 git 服务(github、gitee 等)上创建了一个 <code>blog</code> 仓库用于存放自己的笔记信息(可能是私有的, 毕竟不是所有的笔记文档都想公开).并在 github 上建立了一个 public 仓库来存放图片相关的文件, 比如叫 <code>blog-files</code>.下面我们创建了一个 <code>hello.md</code> 的文档, 在 <code>blog</code> 仓库的位置如下:</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">blog</span><br><span class="line">  - Java</span><br><span class="line">    - 基础知识</span><br><span class="line">      - hello.md</span><br><span class="line">  - JavaScript</span><br><span class="line">  ...</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">此文档上传了两张图片(`Figure-1 hello.png`、`Figure-2 world.png`), 那么我希望在 `blog-files` 仓库这张图片的存放位置可以如下:</span><br></pre></td></tr></table></figure><p>blog-files</p><ul><li>images<ul><li>Java<ul><li>基础知识<ul><li>hello<ul><li>Figure-1 hello.png</li><li>Figure-2 world.png<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## markdown-pic2github 改造</span><br><span class="line"></span><br><span class="line">找到此插件的目录, 对 `extension.js` 的源码进行修改.虽然不熟悉 js, nodejs 等相关技术, 不过依葫芦画瓢, 先试试再说, 核心代码如下:</span><br></pre></td></tr></table></figure></li></ul></li></ul></li></ul></li></ul></li></ul><p>// 解构<br>let {fsPath} = result[0]<br>let imgName = fsPath.split(path.sep).pop()<br>let cmdStr = ‘cp ‘ + fsPath + ‘ ‘ + localFolder + ‘ &amp;&amp; ‘ +<br>‘cd ‘ + localFolder + ‘ &amp;&amp; ‘ +<br>‘git add ‘ + imgName + ‘ &amp;&amp; ‘ +<br>‘git commit -m ‘ + doc.fileName.split(path.sep).pop() + ‘ &amp;&amp; ‘ +<br>‘git push’<br>console.log(cmdStr)<br>exec(cmdStr, function(err, stdout, stderr) {<br>    if (err) {<br>        console.log(‘wrong:’ + stderr)<br>    } else {<br>        let data = stdout<br>        console.log(data)<br>    }<br>})<br>let imgUrl = ‘<img src="https://raw.githubusercontent.com/&#39; + remoteRepo +&#39;/master/&#39;+ imgName + &#39;" alt="">‘<br>editor.edit(textEditorEdit =&gt; {<br>    textEditorEdit.insert(editor.selection.active, imgUrl)<br>})<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">从上面可以看到其实不是很难嘛, 都是一些比较简单的语法还有 API 的使用.另外可以看到其实插件最终是拼接了一条命令字符串, 然后应该是让操作系统执行.最终将图片的地址拼接出来插入到文档中.按照上面的要求, 做了如下的几点修改:</span><br><span class="line"></span><br><span class="line">- 命令字符串中使用的是 `cp` 命令, 这在 windows 上是没法使用的, 所以我们需要改成 `xcopy` 命令, 为了防止图片有空格, 最好在在命令中的图片名称前后加上 `&quot;`.另外为了覆盖当前已存在的文件, 在此命令最后加上 `/y` 参数. </span><br><span class="line">- `doc.fileName`(`vscode.window.activeTextEditor.document.fileName`) 取得是当前编辑文档的全路径.通过这个全路径我们可以知道是在哪个磁盘目录, 由此可以进入到 git 的根目录.根据这个根目录和文档的全路径, 可以得到要创建的图片的目录.比如, 当前编辑的 `hello.md` 文档位于 `E:\git\blog\Java\基础知识\hello.md`, 则在 `E:\git\blog-files\images` 目录下创建 `Java\基础知识\hello` 目录. </span><br><span class="line">- 创建目录使用 `mkdir` 命令, 如果创建的目录存在的话会报错, 所以我们需要先进行判断, 不存在则创建, 所以需要使用命令: `if not exists Java\基础知识\hello mdir Java\基础知识\hello`, 另外, 因为后面还要拼接 git 相关的命令, 所以讲这条命令放在 `()` 中, 防止发生短路与, 导致后面的命令不执行.</span><br><span class="line"></span><br><span class="line">经过上面的改造, 我们可以得出类似于下面的命令:</span><br></pre></td></tr></table></figure></p><p>E: &amp;&amp; cd E:\git\blog-files\images &amp;&amp; (if not exists Java\基础知识\hello mdir Java\基础知识\hello) &amp;&amp; xcopy “E:\temp\images\Figure-1 hello.png” “E:\git\blog-files\images\Java\基础知识\hello\Figure-1 hello.png” /y &amp;&amp; git add “images\Java\基础知识\hello\Figure-1 hello.png” &amp;&amp; git commit -m “hello.md” &amp;&amp; git push<br><code>`</code></p><p>通过上面一系列命令的组合, 我们就完成了我们想要的整个功能.其实改造的成本并不大, 而且没太多的难度.详细代码可见 <a href="https://github.com/ykgarfield/vscode-markdown-pic2github" target="_blank" rel="noopener">https://github.com/ykgarfield/vscode-markdown-pic2github</a>, 如果有自己的特殊要求, 完全可以自行改造.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;支持图床服务的编辑器&quot;&gt;&lt;a href=&quot;#支持图床服务的编辑器&quot; class=&quot;headerlink&quot; title=&quot;支持图床服务的编辑器&quot;&gt;&lt;/a&gt;支持图床服务的编辑器&lt;/h2&gt;&lt;p&gt;目前市场上的图床服务还是比较多的, 比如 &lt;code&gt;github&lt;/cod
+      
+    
+    </summary>
+    
+      <category term="工具" scheme="https://ykgarfield.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="vscode" scheme="https://ykgarfield.github.io/categories/%E5%B7%A5%E5%85%B7/vscode/"/>
+    
+    
+      <category term="vscode" scheme="https://ykgarfield.github.io/tags/vscode/"/>
+    
+      <category term="github 图床" scheme="https://ykgarfield.github.io/tags/github-%E5%9B%BE%E5%BA%8A/"/>
+    
+  </entry>
   
   <entry>
     <title>从 fesacr 源码中总结出的 Java 代码编写注意事项</title>
